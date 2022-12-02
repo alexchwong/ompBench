@@ -10,17 +10,20 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(microbenchmark)
 library(ompBench)
-library(ggplot2e)
+library(ggplot2)
 ```
 
 ```{r}
 mbm = microbenchmark(
   ompBAM = {
-    idxstats_ompBAM(ompBAM::example_BAM("Unsorted"), 1)
+    idxstats_ompBAM(ompBAM::example_BAM("Unsorted"), 1, F)
   },
   hts = {
-    idxstats_htslib(ompBAM::example_BAM("Unsorted"), 1)
+    idxstats_htslib(ompBAM::example_BAM("Unsorted"), 1, F)
   },
-  times = 10
+  hts_omp = {
+    idxstats_htslib_omp(ompBAM::example_BAM("Unsorted"), 1, F)
+  },  
+  times = 3
 )
 ```

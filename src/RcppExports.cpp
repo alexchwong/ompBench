@@ -23,6 +23,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// idxstats_hts_omp
+int idxstats_hts_omp(std::string bam_path, int n_threads_to_use, bool verbose);
+RcppExport SEXP _ompBench_idxstats_hts_omp(SEXP bam_pathSEXP, SEXP n_threads_to_useSEXP, SEXP verboseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type bam_path(bam_pathSEXP);
+    Rcpp::traits::input_parameter< int >::type n_threads_to_use(n_threads_to_useSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    rcpp_result_gen = Rcpp::wrap(idxstats_hts_omp(bam_path, n_threads_to_use, verbose));
+    return rcpp_result_gen;
+END_RCPP
+}
 // idxstats_pbam
 int idxstats_pbam(std::string bam_file, int n_threads_to_use, bool verbose);
 RcppExport SEXP _ompBench_idxstats_pbam(SEXP bam_fileSEXP, SEXP n_threads_to_useSEXP, SEXP verboseSEXP) {
@@ -39,6 +52,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_ompBench_idxstats_hts", (DL_FUNC) &_ompBench_idxstats_hts, 3},
+    {"_ompBench_idxstats_hts_omp", (DL_FUNC) &_ompBench_idxstats_hts_omp, 3},
     {"_ompBench_idxstats_pbam", (DL_FUNC) &_ompBench_idxstats_pbam, 3},
     {NULL, NULL, 0}
 };

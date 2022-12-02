@@ -5,6 +5,10 @@ idxstats_hts <- function(bam_path, n_threads_to_use = 1L, verbose = TRUE) {
     .Call(`_ompBench_idxstats_hts`, bam_path, n_threads_to_use, verbose)
 }
 
+idxstats_hts_omp <- function(bam_path, n_threads_to_use = 1L, verbose = TRUE) {
+    .Call(`_ompBench_idxstats_hts_omp`, bam_path, n_threads_to_use, verbose)
+}
+
 idxstats_pbam <- function(bam_file, n_threads_to_use = 1L, verbose = TRUE) {
     .Call(`_ompBench_idxstats_pbam`, bam_file, n_threads_to_use, verbose)
 }
