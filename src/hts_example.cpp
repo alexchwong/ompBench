@@ -59,7 +59,7 @@ int idxstats_hts(
   return(0);
 }
 
-#define B_POOL_NUM 1000000
+#define B_POOL_NUM 100000
 
 // [[Rcpp::export]]
 int idxstats_hts_omp(
