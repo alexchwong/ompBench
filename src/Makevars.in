@@ -1,0 +1,10 @@
+PKG_CXXFLAGS = $(OMPBAM_PKG_CXXFLAGS) 
+PKG_LIBS = $(OMPBAM_PKG_LIBS)
+
+RHTSLIB_LIBS=$(shell "${R_HOME}/bin${R_ARCH_BIN}/Rscript" -e \
+    'Rhtslib::pkgconfig("PKG_LIBS")')
+RHTSLIB_CPPFLAGS=$(shell "${R_HOME}/bin${R_ARCH_BIN}/Rscript" -e \
+    'Rhtslib::pkgconfig("PKG_CPPFLAGS")')
+
+PKG_LIBS+=$(RHTSLIB_LIBS)
+PKG_CXXFLAGS+=$(RHTSLIB_CPPFLAGS)

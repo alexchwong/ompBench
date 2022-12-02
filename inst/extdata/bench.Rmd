@@ -1,0 +1,26 @@
+---
+title: "bench_ompBam_hts"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(microbenchmark)
+library(ompBench)
+library(ggplot2e)
+```
+
+```{r}
+mbm = microbenchmark(
+  ompBAM = {
+    idxstats_ompBAM(ompBAM::example_BAM("Unsorted"), 1)
+  },
+  hts = {
+    idxstats_htslib(ompBAM::example_BAM("Unsorted"), 1)
+  },
+  times = 10
+)
+```
