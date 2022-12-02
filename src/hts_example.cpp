@@ -94,40 +94,39 @@ int idxstats_hts_omp(
   // Creates a data structure that stores per-chromosome read counts
   std::vector<uint32_t> total_reads(chrom_count);
 
+  // Pre-allocate bam1_t pool
+  std::vector<bam1_t *> bpool;
+  for(int i = 0; i < B_POOL_NUM; i++) {
+    bpool.push_back(bam_init1());
+  }
+
   bool eofyet = false;
   while(!eofyet) {
     
     // Multi-threaded read a number of reads into memory
     int pool_size = 0;
-    std::vector<bam1_t *> bpool;
-    while(true) {
-      bam1_t * b = bam_init1();
-      int ret = bam_read1(fp, b);
+    for(unsigned int i = 0; i < bpool.size(); i++) {
+      int ret = bam_read1(fp, bpool.at(i));
       if(ret < 0) {
-        bam_destroy1(b);
         break;
       } else {
-        bpool.push_back(b);
         pool_size++;
-        if(pool_size == B_POOL_NUM) {
-          break;
-        }
       }
     }
-    
-    if(bpool.size() == 0) {
+      
+    if(pool_size == 0) {
       break;
     }
     // read data divider
     std::vector<int> pool_starts;
     std::vector<int> pool_ends;
-    int est_tp_size = 1 + (bpool.size() / n_threads_to_really_use);
+    int est_tp_size = 1 + (pool_size / n_threads_to_really_use);
     int curpos = 0;
     for(unsigned int i = 0; i < n_threads_to_really_use; i++) {
-      if(curpos + est_tp_size > bpool.size()) {
+      if(curpos + est_tp_size > pool_size) {
         pool_starts.push_back(curpos);
-        pool_ends.push_back(bpool.size() - 1);
-        curpos = bpool.size();
+        pool_ends.push_back(pool_size - 1);
+        curpos = pool_size;
       } else {
         pool_starts.push_back(curpos);
         pool_ends.push_back(curpos + est_tp_size - 1);
@@ -169,13 +168,11 @@ int idxstats_hts_omp(
         }
       }
     }
-
-    for(unsigned int i = 0; i < bpool.size(); i++) {
-      bam_destroy1(bpool.at(i));
-    }
   }
   
-
+  for(unsigned int i = 0; i < bpool.size(); i++) {
+    bam_destroy1(bpool.at(i));
+  }
   bam_hdr_destroy(header);
   bgzf_close(fp);
 
