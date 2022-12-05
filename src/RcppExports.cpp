@@ -24,15 +24,18 @@ BEGIN_RCPP
 END_RCPP
 }
 // idxstats_hts_omp
-int idxstats_hts_omp(std::string bam_path, int n_threads_to_use, bool verbose);
-RcppExport SEXP _ompBench_idxstats_hts_omp(SEXP bam_pathSEXP, SEXP n_threads_to_useSEXP, SEXP verboseSEXP) {
+int idxstats_hts_omp(std::string bam_path, int n_threads_to_use, int read_pool_size, bool parallel_hts, bool parallel_readproc, bool verbose);
+RcppExport SEXP _ompBench_idxstats_hts_omp(SEXP bam_pathSEXP, SEXP n_threads_to_useSEXP, SEXP read_pool_sizeSEXP, SEXP parallel_htsSEXP, SEXP parallel_readprocSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::string >::type bam_path(bam_pathSEXP);
     Rcpp::traits::input_parameter< int >::type n_threads_to_use(n_threads_to_useSEXP);
+    Rcpp::traits::input_parameter< int >::type read_pool_size(read_pool_sizeSEXP);
+    Rcpp::traits::input_parameter< bool >::type parallel_hts(parallel_htsSEXP);
+    Rcpp::traits::input_parameter< bool >::type parallel_readproc(parallel_readprocSEXP);
     Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
-    rcpp_result_gen = Rcpp::wrap(idxstats_hts_omp(bam_path, n_threads_to_use, verbose));
+    rcpp_result_gen = Rcpp::wrap(idxstats_hts_omp(bam_path, n_threads_to_use, read_pool_size, parallel_hts, parallel_readproc, verbose));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -52,7 +55,7 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_ompBench_idxstats_hts", (DL_FUNC) &_ompBench_idxstats_hts, 3},
-    {"_ompBench_idxstats_hts_omp", (DL_FUNC) &_ompBench_idxstats_hts_omp, 3},
+    {"_ompBench_idxstats_hts_omp", (DL_FUNC) &_ompBench_idxstats_hts_omp, 6},
     {"_ompBench_idxstats_pbam", (DL_FUNC) &_ompBench_idxstats_pbam, 3},
     {NULL, NULL, 0}
 };
